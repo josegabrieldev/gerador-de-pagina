@@ -1,19 +1,167 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Criador Inteligente</title>
-</head>
-<body>
-    <p>Gerador com Inteligência Artificial</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Crie páginas profissionais com inteligência artificial. Gere design e código otimizados para conversão e SEO em segundos."
+    />
+    <meta
+      name="keywords"
+      content="criador inteligente, IA, design automático, geração de código, SEO, conversão"
+    />
+    <meta name="author" content="Criador Inteligente | José Gabriel" />
+    <title>Criador Inteligente | Crie sua página com IA</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
 
-    <h1>Crie sua página com um prompt</h1>
+  <body>
+    <header class="header">
+      <nav class="navbar">
+        <h2 class="logo">Criador Inteligente</h2>
+        <ul class="nav-links">
+          <li><a href="#inicio">Início</a></li>
+          <li><a href="#resultado">Como Funciona</a></li>
+          <li><a href="#recursos">Recursos</a></li>
+          <li><a href="#contato">Pago?</a></li>
+        </ul>
+        <div class="nav-buttons">
+          <a href="#comecar" class="btn-primary">Começar Agora</a>
+          <button id="mobileMenu" class="btn-menu">
+            <i data-lucide="menu"></i>
+          </button>
+        </div>
+      </nav>
+    </header>
 
-    <p>Descreva seu negócio e veja a IA criar uma página profissional em segundos</p>
+    <!-- Mobile Navigation Overlay -->
+    <div id="mobileNav" class="mobile-nav">
+      <div class="mobile-nav-content">
+        <button id="closeMobileNav" class="close-btn">
+          <i data-lucide="x"></i>
+        </button>
+        <nav class="mobile-nav-links">
+          <a href="#inicio" class="mobile-link">Início</a>
+          <a href="#resultado" class="mobile-link">Como Funciona</a>
+          <a href="#recursos" class="mobile-link">Recursos</a>
+          <a href="#contato" class="mobile-link">Pago?</a>
+        </nav>
+      </div>
+    </div>
 
-    <textarea name="" id=""></textarea>
-    <button>Gerar</button>
+    <!-- Dark Overlay -->
+    <div id="darkOverlay" class="dark-overlay"></div>
+
+    <main id="inicio" class="hero">
+      <span class="slogan">⚡ Nova geração de design AI</span>
+      <div class="hero-content">
+        <h1>Crie sua página com <br> <span>um único prompt</span></h1>
+        <p>
+          Descreva seu negócio e veja a IA criar uma página profissional em
+          segundos.
+        </p>
+
+        <form class="prompt-box">
+          <div class="container-textarea">
+              <textarea placeholder="Descreva seu estilo de negócio..."></textarea>
+              <button type="submit" class="btn-secondary">✨ Gerar</button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <section id="resultado" class="result-section">
+      <h3>Resultado Instantâneo</h3>
+      <p>Veja como a inteligência artificial transforma suas palavras em código de alta performance e design elegante</p>
+      <div class="result-container">
+        <div class="container-preview">
+          <div class="preview-header">
+            <div class="traffic-lights">
+              <span class="traffic-light red"></span>
+              <span class="traffic-light yellow"></span>
+              <span class="traffic-light green"></span>
+            </div>
+            <div class="address-bar">
+              <p>criador-inteligente.ai/preview/3a9f2...</p>
+            </div>
+          </div>
+          <div class="result-preview">
+            <div class="preview-overlay">
+              <div class="processing-box">
+                <div class="ai-icon">
+                    <i data-lucide="bot"></i>
+                </div>
+                <div>
+                    <p>Processando Design...</p>
+                    <span>Analisando contexto semântico</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="result-code">
+          <div class="code-header">
+            <h4>Página Gerada</h4>
+            <button class="copy-btn">
+                <i data-lucide="files"></i>
+                Copiar Código
+            </button>
+          </div>
+          <div class="code-tabs">
+            <button class="tab active">HTML</button>
+            <button class="tab">CSS</button>
+            <button class="tab">JavaScript</button>
+          </div>
+            <pre><code><div class="hero-section">
+            </code></pre>
+          <div class="code-footer">
+            <p>Otimizado para conversão e SEO</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="recursos" class="features">
+      <div class="feature">
+        <h4>⚡ Rápido</h4>
+        <p>Gere páginas completas em segundos com tecnologia de ponta.</p>
+      </div>
+      <div class="feature">
+        <h4>🧠 Inteligente</h4>
+        <p>
+          Entende seu negócio e cria designs personalizados automaticamente.
+        </p>
+      </div>
+      <div class="feature">
+        <h4>🎨 Customizável</h4>
+        <p>Edite cores, textos e imagens com total liberdade.</p>
+      </div>
+    </section>
+
+    <section id="comecar" class="cta">
+      <h3>Pronto para multiplicar sua produtividade?</h3>
+      <div class="cta-buttons">
+        <a href="#" class="btn-primary">Começar gratuitamente</a>
+        <a href="#" class="btn-secondary">Ver demonstração</a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <p>&copy; 2024 Criador Inteligente. Todos os direitos reservados.</p>
+        <ul>
+          <li><a href="#termos">Termos de Uso</a></li>
+          <li><a href="#privacidade">Privacidade</a></li>
+          <li><a href="#cookies">Cookies</a></li>
+          <li><a href="#contato">Contato</a></li>
+          <li><a href="#documentacao">Documentação</a></li>
+        </ul>
+      </div>
+    </footer>
+
     <script src="scripts.js"></script>
-</body>
+  </body>
 </html>
