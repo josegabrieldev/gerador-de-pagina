@@ -234,8 +234,9 @@ body {
   display: inline-block;
   background-color: var(--secondary-bg);
   color: var(--accent-purple);
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   font-weight: 600;
+  text-transform: uppercase;
   margin-bottom: 1rem;
   padding: 5px 10px;
   border-radius: 12px;
@@ -593,6 +594,60 @@ pre {
   border-radius: 8px;
   overflow-x: auto;
   font-size: 0.75rem;
+  min-height: 200px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* Scrollbar Styling */
+pre::-webkit-scrollbar {
+  width: 4px;
+}
+
+pre::-webkit-scrollbar-track {
+  background: var(--gray-code-bg);
+  border-radius: 2px;
+}
+
+pre::-webkit-scrollbar-thumb {
+  background: var(--accent-purple);
+  border-radius: 2px;
+  transition: background 0.3s;
+}
+
+pre::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-green);
+}
+
+/* Firefox scrollbar styling */
+pre {
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-purple) var(--gray-code-bg);
+}
+
+/* Main Page Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-purple);
+  border-radius: 3px;
+  transition: background 0.3s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-green);
+}
+
+/* Firefox main page scrollbar */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-purple) var(--bg-color);
 }
 
 .code-footer {
