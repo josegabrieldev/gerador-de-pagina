@@ -36,6 +36,7 @@ async function gerarPagina() {
   });
 
   const data = await resposta.json();
+  console.log(data)
 
   blocoCodigo.textContent = data.html;
   blocoSite.srcdoc = data.html;
