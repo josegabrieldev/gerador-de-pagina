@@ -19,29 +19,6 @@
         - Exibir Site na variavel blocoSite (Como endereço (src))
 */
 
-const PromptSistemaIA = `Você é um designer web premiado e Programador.
-Crie uma landing page COMPLETA e VISUALMENTE IMPRESSIONANTE para o negócio descrito.
-
-                    Regras de resposta:
-                    - Responda SOMENTE com HTML e CSS puros
-                    - Não use crases, markdown ou explicações
-                    - Não use tags <img>
-
-                    Identidade visual (capriche e surpreenda):
-                    - Invente uma paleta de cores única que combine com a essência do negócio
-                    - Escolha uma Google Font marcante via @import
-                    - Use emojis grandes no lugar de imagens
-                    - Use CSS moderno: gradientes, sombras, animações sutis, layout generoso, tipografia forte
-
-                    Estrutura da página:
-                    - Header com nome do negócio e menu
-                    - Hero impactante com título, subtítulo e botão CTA
-                    - Seção de diferenciais com emojis
-                    - Depoimento de cliente
-                    - Footer com contato
-
-Todo o conteúdo em português, criativo e específico para o negócio.`;
-
 const TextArea = document.querySelector("#promptUsuario");
 const botaoGerarPagina = document.querySelector("#btnGerarPagina");
 const blocoCodigo = document.querySelector("#blocoCodigo");
@@ -49,35 +26,19 @@ const blocoSite = document.querySelector("#blocoSite");
 
 botaoGerarPagina.addEventListener("click", gerarPagina);
 
- async function gerarPagina(){
-    const promptUsuario = TextArea.value;
-    
-    const respostaDaIA = await fetch(GROQ_ENDERECO, {
-        method: "POST",
-        headers: {
-            "Content-Type" : "application/json",
-            "Authorization": `Bearer ${GROQ_CHAVE}`
-        },
-        body: JSON.stringify({
-            "model": "llama-3.3-70b-versatile",
-            "messages": [
-           {
-             "role": "user",
-             "content": promptUsuario
-           },
-           {
-             "role": "system",
-             "content": PromptSistemaIA
-           }
-         ],
-        })
-    })
+async function gerarPagina() {
+  const promptUsuario = TextArea.value;
 
-    const dadosDaResposta = await respostaDaIA.json();
-    const codigocompleto = dadosDaResposta.choices[0].message.content
-    
-    blocoCodigo.textContent = codigocompleto;
-    blocoSite.srcdoc = codigocompleto;
+  const resposta = await fetch("http://localhost:3000/api/gerar-pagina", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ promptUsuario }),
+  });
 
-    TextArea.value = "";
-};
+  const data = await resposta.json();
+
+  blocoCodigo.textContent = data.html;
+  blocoSite.srcdoc = data.html;
+
+  TextArea.value = "";
+}
