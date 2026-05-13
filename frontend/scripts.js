@@ -19,7 +19,6 @@
         - Exibir Site na variavel blocoSite (Como endereço (src))
 */
 
-
 const PromptSistemaIA = `Você é um designer web premiado e Programador.
 Crie uma landing page COMPLETA e VISUALMENTE IMPRESSIONANTE para o negócio descrito.
 
