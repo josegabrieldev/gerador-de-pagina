@@ -16,10 +16,10 @@
     <p class="subtitulo">Descreva seu negócio e veja a IA criar sua página simples em segundos</p>
     <div class="box-entrada">
       <textarea name="promptUsuario" id="promptUsuario" placeholder="Descreva seu negócio ou digite um tema..."></textarea>
-      <button>Gerar Página</button>
+      <button id="btnGerarPagina">Gerar Página</button>
     </div>
     <div class="box-resultado">
-      <p class="bloco-codigo">
+      <p class="bloco-codigo" id="blocoCodigo">
 * {
   padding: 0;
   margin: 0;
@@ -45,7 +45,8 @@ h1 {
   margin: 1rem 0;
 }
       </p>
-      <iframe src="" frameborder="0" class="bloco-site"></iframe>
+      <iframe src="" frameborder="0" class="bloco-site" id="blocoSite"></iframe>
     </div>
+    <script src="scripts.js"></script>
   </body>
 </html>

@@ -60,6 +60,7 @@ h1 > span {
   padding: 0.7em;
   border: none;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 .box-resultado {
@@ -75,7 +76,7 @@ h1 > span {
 
 .box-resultado .bloco-codigo {
   width: 30%;
-  height: 600px;
+  height: 550px;
   background: #0c0c0f;
   color: rgba(255, 255, 255, 0.603);
   font-size: 0.9em;
@@ -88,7 +89,7 @@ h1 > span {
 
 .box-resultado .bloco-site {
   width: 70%;
-  height: 600px;
+  height: 550px;
   background: #1f1d1da4;
   border: 1px solid #27c93f;
   border-radius: 12px;
