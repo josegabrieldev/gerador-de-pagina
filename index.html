@@ -4,49 +4,104 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gerador de Páginas</title>
-    <link rel="stylesheet" href="frontend/styles.css">
+    <link rel="stylesheet" href="frontend/styles.css" />
   </head>
   <body>
-    <p>⚡ Gerador com Inteligência Artificial</p>
-    <h1>
-      Crie sua Página
-      <br />
-      <span>com um Prompt</span>
-    </h1>
-    <p class="subtitulo">Descreva seu negócio e veja a IA criar sua página simples em segundos</p>
-    <div class="box-entrada">
-      <textarea name="promptUsuario" id="promptUsuario" placeholder="Descreva seu negócio ou digite um tema..."></textarea>
-      <button id="btnGerarPagina">Gerar Página</button>
-    </div>
-    <div class="box-resultado">
-      <p class="bloco-codigo" id="blocoCodigo">
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
+    <header>
+      <h2>Crie com IA</h2>
+      <nav>
+        <a href="#inicio">Início</a>
+        <a href="#recursos">Recursos</a>
+        <a href="#contato">Contato</a>
+      </nav>
+    </header>
 
-html, body {
-  width: 100vw;
-  height: 100vh;
-}
+    <main>
+      <section id="inicio">
+        <h1>
+          Crie sua Página
+          <br />
+          <span>com um Prompt</span>
+        </h1>
+        <p class="subtitulo">
+          Transforme suas ideias em interfaces profissionais instantaneamente. O
+          poder da IA generativa a serviço do seu próximo grande projeto.
+        </p>
+        <article class="box-entrada">
+          <div class="entrada-container">
+            <textarea
+              name="promptUsuario"
+              id="promptUsuario"
+              placeholder="Descreva seu negócio ou digite um tema..."
+            ></textarea>
+            <div class="sugestao-btn">
+              <p>Sugestão: <span id="sugestao">Landing Page para Saas</span></p>
+              <button id="btnGerarPagina">Gerar Página</button>
+            </div>
+          </div>
+        </article>
+      </section>
 
-body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: linear-gradient(90deg, #141418 0%, #26262c 100%);
-  color: white;
-  padding: 2em;
-}
+      <section id="recursos">
+        <article class="container-codigo">
+          <div class="header-codigo">
+            <p>Código Gerado</p>
+            <div class="botoes-codigo">
+              <button id="copy"></button>
+              <button id="download"></button>
+            </div>
+          </div>
+          <div class="codigo-preview">
+            <div class="bloco-codigo" id="blocoCodigo"></div>
+          </div>
+        </article>
 
-h1 {
-  font-size: 2.5em;
-  margin: 1rem 0;
-}
+        <article class="container-site">
+          <div class="header-site">
+            <p>Pré-Visualização</p>
+            <div class="botoes-site">
+              <button class="desktop"></button>
+              <button class="tablet"></button>
+              <button class="celular"></button>
+            </div>
+          </div>
+          <div class="site-preview">
+            <div class="tela-inicial">
+              👀
+              <p>Sua página aparecerá aqui...</p>
+            </div>
+            <iframe
+              src=""
+              frameborder="0"
+              class="bloco-site"
+              id="blocoSite"
+            ></iframe>
+          </div>
+        </article>
+      </section>
+
+      <div class="card-recurso">
+        <p class=".velocidade"></p>
+        <span>
+          Velocidade <br />
+          2.5s
+        </span>
+      </div>
+    </main>
+
+    <footer>
+      <h2>⚡ Gerador com Inteligência Artificial</h2>
+      <p>
+        © 2024 Gerador com Inteligência Artificial. Todos os direitos
+        reservados.
       </p>
-      <iframe src="" frameborder="0" class="bloco-site" id="blocoSite"></iframe>
-    </div>
+      <ul>
+        <li><a href="#">Termos</a></li>
+        <li><a href="#">Privacidade</a></li>
+        <li><a href="#">Contato</a></li>
+      </ul>
+    </footer>
+
     <script src="frontend/scripts.js"></script>
   </body>
 </html>
