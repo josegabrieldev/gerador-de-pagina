@@ -67,7 +67,7 @@ app.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
 app.listen(PORT, () => {
   console.log('\n🚀 Gerador de Página — Backend rodando!');
   console.log(`📡 Servidor: http://localhost:${PORT}`);
-  console.log(`🔑 API Key configurada: ${process.env.ANTHROPIC_API_KEY ? '✅ Sim' : '❌ Não (configure no .env)'}`);
+  console.log(`🔑 API Key configurada: ${process.env.GROQ_API_KEY ? '✅ Sim' : '❌ Não (configure no .env)'}`);
   console.log(`🌐 CORS ativo para origens configuradas`);
   console.log('────────────────────────────────────────\n');
 });
