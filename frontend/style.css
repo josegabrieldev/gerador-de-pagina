@@ -719,7 +719,7 @@ body {
   font-size: 0.85rem; line-height: 1.7;
   color: var(--text-primary);
   tab-size: 2;
-  white-space: pre;
+  white-space: pre-wrap;
   scrollbar-width: thin;
   scrollbar-color: var(--scrollbar-thumb) transparent;
 }

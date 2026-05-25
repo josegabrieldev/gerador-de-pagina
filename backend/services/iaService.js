@@ -58,7 +58,8 @@ IMPORTANTE:
 - O CSS deve ser extenso e detalhado, com variáveis CSS e animações
 - O JS deve adicionar interatividade (menu mobile, scroll suave, animações, etc.)
 - Use emojis estrategicamente no conteúdo
-- Retorne SOMENTE o JSON, sem markdown, sem \`\`\`, sem explicações`;
+- Retorne SOMENTE o JSON, sem markdown, sem \`\`\`, sem explicações
+- FORMATAÇÃO OBRIGATÓRIA: o código dentro do JSON deve estar INDENTADO e FORMATADO com quebras de linha (\\n) e espaços. Cada tag HTML em sua própria linha. Cada propriedade CSS em sua própria linha. Nunca retorne código minificado numa única linha`;
 }
 
 /**
@@ -100,37 +101,117 @@ async function callIA(tema) {
  * Extrai JSON da resposta da IA com tratamento robusto de erros
  */
 function parseIAResponse(rawText) {
-  // Remove possíveis blocos de markdown
-  let clean = rawText.trim();
-  clean = clean.replace(/^```(?:json)?\n?/i, '').replace(/\n?```$/i, '').trim();
 
-  // Tenta parse direto
+  let clean = rawText.trim();
+  clean = clean.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+
+  // Tentativa 1 — parse direto
   try {
     const parsed = JSON.parse(clean);
     return validateAndNormalize(parsed);
   } catch (e) {
-    console.warn('[iaService] Parse direto falhou, tentando extrair JSON...');
+    console.warn('[iaService] Parse direto falhou. Tentando corrigir newlines...');
   }
 
-  // Tenta extrair o JSON do texto (busca pelo primeiro { até o último })
+  // Tentativa 2 — corrige quebras de linha reais dentro das strings
+  try {
+    const fixed = fixJsonNewlines(clean);
+    const parsed = JSON.parse(fixed);
+    return validateAndNormalize(parsed);
+  } catch (e) {
+    console.warn('[iaService] Correção de newlines falhou. Tentando extração manual...');
+  }
+
+  // Tentativa 3 — extrai campo por campo com regex
+  try {
+    const manual = extractFieldsManually(clean);
+    if (manual.html || manual.css || manual.js) {
+      return validateAndNormalize(manual);
+    }
+  } catch (e) {
+    console.warn('[iaService] Extração manual falhou.');
+  }
+
+  // Tentativa 4 — pega qualquer bloco { } e tenta de novo
   const jsonMatch = clean.match(/\{[\s\S]*\}/);
   if (jsonMatch) {
     try {
-      const parsed = JSON.parse(jsonMatch[0]);
+      const fixed = fixJsonNewlines(jsonMatch[0]);
+      const parsed = JSON.parse(fixed);
       return validateAndNormalize(parsed);
     } catch (e) {
-      console.warn('[iaService] Extração de JSON também falhou.');
+      console.warn('[iaService] Extração de bloco {} falhou.');
     }
   }
 
-  // Fallback: retorna como código completo bruto
-  console.warn('[iaService] Usando fallback — retornando texto bruto como completo');
+  // Fallback final
+  console.warn('[iaService] Todos os métodos falharam. Usando fallback.');
   return {
     html: '<!-- Não foi possível separar o HTML -->',
     css: '/* Não foi possível separar o CSS */',
     js: '// Não foi possível separar o JavaScript',
     completo: clean,
   };
+}
+
+function fixJsonNewlines(text) {
+  let result = '';
+  let inString = false;
+  let escaped = false;
+
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+
+    if (escaped) {
+      result += ch;
+      escaped = false;
+      continue;
+    }
+
+    if (ch === '\\') {
+      result += ch;
+      escaped = true;
+      continue;
+    }
+
+    if (ch === '"') {
+      inString = !inString;
+      result += ch;
+      continue;
+    }
+
+    if (inString && ch === '\n') {
+      result += '\\n';
+      continue;
+    }
+
+    if (inString && ch === '\r') {
+      continue;
+    }
+
+    result += ch;
+  }
+
+  return result;
+}
+
+function extractFieldsManually(text) {
+  const result = { html: '', css: '', js: '', completo: '' };
+  const fields = ['html', 'css', 'js', 'completo'];
+
+  fields.forEach(field => {
+    const regex = new RegExp(`"${field}"\\s*:\\s*"([\\s\\S]*?)(?<!\\\\)"`, 'i');
+    const match = text.match(regex);
+    if (match) {
+      result[field] = match[1]
+        .replace(/\\n/g, '\n')
+        .replace(/\\t/g, '\t')
+        .replace(/\\"/g, '"')
+        .replace(/\\\\/g, '\\');
+    }
+  });
+
+  return result;
 }
 
 /**

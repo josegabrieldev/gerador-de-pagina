@@ -179,27 +179,109 @@ function displayResult(tema, data) {
 }
 
 function loadPreview(data) {
-  const combined = data.completo || `<!DOCTYPE html>
+  const completo = data.completo || '';
+  const completoPareceHTML = completo.trim().startsWith('<!DOCTYPE') ||
+                             completo.trim().startsWith('<html');
+
+  let combined;
+
+  if (completoPareceHTML) {
+    combined = completo;
+  } else {
+    combined = `<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>${data.css || ''}</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>${data.css || ''}</style>
 </head>
 <body>
 ${data.html || ''}
 <script>${data.js || ''}<\/script>
 </body>
 </html>`;
+  }
 
   const blob = new Blob([combined], { type: 'text/html' });
   const url = URL.createObjectURL(blob);
   previewFrame.src = url;
 }
 
-// ---- SYNTAX HIGHLIGHT ----
+// ---- FORMAT + SYNTAX HIGHLIGHT ----
 function renderCode(el, code, lang) {
-  el.innerHTML = highlight(escapeHtml(code), lang);
+  const formatted = formatCode(code, lang);
+  const escaped   = escapeHtml(formatted);
+  el.innerHTML    = highlight(escaped, lang);
+}
+
+function formatCode(code, lang) {
+  if (!code || !code.trim()) return code;
+  if (lang === 'html') return formatHtml(code);
+  if (lang === 'css')  return formatCss(code);
+  if (lang === 'js')   return formatJs(code);
+  return code;
+}
+
+function formatHtml(code) {
+  const inlineTags = /^(a|span|strong|em|b|i|u|small|label|button|img|input|br|hr|li|td|th|dt|dd|abbr|code|kbd|mark|cite|q|s|sub|sup)$/i;
+  const selfClosing = /\/>$|^<(area|base|br|col|embed|hr|img|input|link|meta|param|source|track|wbr)/i;
+  const pad = (n) => '  '.repeat(Math.max(0, n));
+  let indent = 0;
+
+  const flat = code
+    .replace(/>\s+</g, '><')
+    .replace(/\s{2,}/g, ' ')
+    .trim();
+
+  const tokens = flat.split(/(?=<)|(?<=>)/).filter(t => t.trim());
+  const lines = [];
+
+  tokens.forEach(token => {
+    const trimmed      = token.trim();
+    if (!trimmed) return;
+    const isClosing    = /^<\//.test(trimmed);
+    const isSelfClose  = selfClosing.test(trimmed);
+    const isComment    = trimmed.startsWith('<!--');
+    const tagNameMatch = trimmed.match(/^<\/?([a-zA-Z][a-zA-Z0-9]*)/);
+    const tagName      = tagNameMatch ? tagNameMatch[1] : '';
+    const isInline     = inlineTags.test(tagName);
+
+    if (isClosing && !isSelfClose) indent = Math.max(0, indent - 1);
+    lines.push(pad(indent) + trimmed);
+    if (!isClosing && !isSelfClose && !isComment && !isInline && tagName) indent++;
+  });
+
+  return lines.join('\n');
+}
+
+function formatCss(code) {
+  return code
+    .replace(/\s*\{\s*/g, ' {\n')
+    .replace(/;\s*/g, ';\n')
+    .replace(/\s*\}\s*/g, '\n}\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+    .split('\n')
+    .map(line => {
+      const t = line.trim();
+      if (!t) return '';
+      const isProperty = t.includes(':') && !t.endsWith('{') && !t.startsWith('}') && !t.startsWith('/*') && !t.startsWith('@');
+      return isProperty ? '  ' + t : t;
+    })
+    .join('\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+function formatJs(code) {
+  if ((code.match(/\n/g) || []).length > 5) return code;
+  return code
+    .replace(/;\s*/g, ';\n')
+    .replace(/\{\s*/g, ' {\n')
+    .replace(/\}\s*/g, '\n}\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
 }
 
 function escapeHtml(str) {
@@ -212,27 +294,26 @@ function escapeHtml(str) {
 
 function highlight(code, lang) {
   if (lang === 'html') return highlightHtml(code);
-  if (lang === 'css') return highlightCss(code);
-  if (lang === 'js') return highlightJs(code);
+  if (lang === 'css')  return highlightCss(code);
+  if (lang === 'js')   return highlightJs(code);
   return code;
 }
 
 function highlightHtml(code) {
   return code
+    .replace(/(&lt;!--[\s\S]*?--&gt;)/g, '<span class="hl-comment">$1</span>')
     .replace(/(&lt;\/?[a-zA-Z][a-zA-Z0-9]*)/g, '<span class="hl-tag">$1</span>')
     .replace(/([a-zA-Z-]+=)(&quot;[^&]*&quot;)/g, '<span class="hl-attr">$1</span><span class="hl-value">$2</span>')
-    .replace(/(&gt;)/g, '<span class="hl-tag">$1</span>')
-    .replace(/(\/&gt;)/g, '<span class="hl-tag">$1</span>')
-    .replace(/(&lt;!--[\s\S]*?--&gt;)/g, '<span class="hl-comment">$1</span>');
+    .replace(/(\/?&gt;)/g, '<span class="hl-tag">$1</span>');
 }
 
 function highlightCss(code) {
   return code
     .replace(/(\/\*[\s\S]*?\*\/)/g, '<span class="hl-comment">$1</span>')
-    .replace(/([.#]?[a-zA-Z][a-zA-Z0-9_-]*\s*{)/g, '<span class="hl-selector">$1</span>')
-    .replace(/([a-zA-Z-]+)(\s*:)/g, '<span class="hl-property">$1</span>$2')
+    .replace(/^([^{}\n]+\{)/gm, '<span class="hl-selector">$1</span>')
+    .replace(/^(\s+)([\w-]+)(\s*:)/gm, '$1<span class="hl-property">$2</span>$3')
     .replace(/:\s*([\d.]+)(px|rem|em|%|vh|vw|deg|s|ms)/g, ': <span class="hl-number">$1</span><span class="hl-unit">$2</span>')
-    .replace(/(#[0-9a-fA-F]{3,8})/g, '<span class="hl-value">$1</span>');
+    .replace(/(#[0-9a-fA-F]{3,8})\b/g, '<span class="hl-value">$1</span>');
 }
 
 function highlightJs(code) {
@@ -240,7 +321,7 @@ function highlightJs(code) {
     .replace(/(\/\/[^\n]*)/g, '<span class="hl-comment">$1</span>')
     .replace(/(\/\*[\s\S]*?\*\/)/g, '<span class="hl-comment">$1</span>')
     .replace(/\b(const|let|var|function|return|if|else|for|while|class|import|export|default|async|await|new|this|typeof|true|false|null|undefined)\b/g, '<span class="hl-keyword">$1</span>')
-    .replace(/(&quot;[^&]*&quot;|&#039;[^&]*&#039;|`[^`]*`)/g, '<span class="hl-string">$1</span>');
+    .replace(/(&quot;[^&]*&quot;|&#039;[^&]*&#039;)/g, '<span class="hl-string">$1</span>');
 }
 
 // ---- CODE TABS ----
