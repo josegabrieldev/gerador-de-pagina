@@ -6,7 +6,7 @@
 "use strict";
 
 // ---- CONFIG ----
-const API_BASE = "http://localhost:3001";
+const API_BASE = "https://gerador-de-pagina-api.onrender.com";
 const API_ENDPOINT = `${API_BASE}/api/generate`;
 
 // ---- STATE ----
