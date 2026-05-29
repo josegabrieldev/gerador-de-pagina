@@ -821,6 +821,36 @@ body {
   .tab-btn { padding: 12px 14px; font-size: 0.65rem; }
 }
 
+/* ---- AVISO MOBILE NO PREVIEW ---- */
+.preview-mobile-notice {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: rgba(139, 92, 255, 0.08);
+  border-bottom: 1px solid rgba(139, 92, 255, 0.25);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.preview-mobile-notice svg {
+  flex-shrink: 0;
+  color: var(--neon-purple);
+}
+
+.preview-mobile-notice strong {
+  color: var(--neon-blue);
+}
+
+@media (max-width: 768px) {
+  .preview-mobile-notice {
+    display: flex;
+  }
+}
+
 @media (min-width: 1200px) {
   .preview-frame-wrapper { height: 700px; }
 }
