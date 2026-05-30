@@ -1,197 +1,292 @@
 # 🚀 Gerador de Página — Neon Tech AI
-
-> Crie sites completos com inteligência artificial em segundos. Digite um tema e receba HTML, CSS e JavaScript prontos para usar, com design moderno Neon Tech.
-
+ 
+> Gere sites completos com inteligência artificial em segundos. Digite um tema e receba HTML, CSS e JavaScript prontos para usar — com design moderno, responsivo e estilizado no tema Neon Tech.
+ 
+**Backend ao vivo:** [https://gerador-de-pagina-api.onrender.com](https://gerador-de-pagina-api.onrender.com)
+ 
 ---
-
-## 📸 Preview
-
+ 
+## 📋 Índice
+ 
+- [Sobre o Projeto](#sobre-o-projeto)
+- [Funcionalidades](#funcionalidades)
+- [Preview](#preview)
+- [Estrutura de Pastas](#estrutura-de-pastas)
+- [Tecnologias](#tecnologias)
+- [Pré-requisitos](#pré-requisitos)
+- [Instalação e Configuração](#instalação-e-configuração)
+- [Como Rodar Localmente](#como-rodar-localmente)
+- [Servidor em Produção (Render)](#servidor-em-produção-render)
+- [API — Documentação](#api--documentação)
+- [Variáveis de Ambiente](#variáveis-de-ambiente)
+- [Modelos de IA Disponíveis](#modelos-de-ia-disponíveis)
+- [Aviso sobre o Plano Gratuito do Render](#aviso-sobre-o-plano-gratuito-do-render)
+- [Licença](#licença)
+---
+ 
+## Sobre o Projeto
+ 
+O **Gerador de Página** é uma aplicação web que usa IA (Groq + LLaMA) para criar sites completos automaticamente. O usuário digita um tema — como "padaria", "pizzaria" ou "clínica odontológica" — e a aplicação retorna uma página HTML responsiva, moderna e funcional em segundos.
+ 
+O projeto é dividido em duas partes independentes:
+ 
+- **Frontend** — interface em HTML, CSS e JavaScript puro, sem frameworks
+- **Backend** — servidor Node.js com Express que se comunica com a API da Groq de forma segura, protegendo a chave de API do usuário final
+---
+ 
+## Funcionalidades
+ 
+- **Geração com IA** — usa o modelo LLaMA 3.3 70B via Groq para criar páginas completas
+- **Preview interativo** — visualiza o resultado em iframe com simulação de Desktop, Tablet e Mobile
+- **Abas de código** — exibe HTML, CSS, JavaScript e código completo separadamente, com syntax highlight
+- **Formatação automática** — o código gerado é indentado e formatado para facilitar a leitura
+- **Copiar código** — botão para copiar qualquer seção com um clique
+- **Download** — baixa a página gerada como arquivo `.html` pronto para usar
+- **Temas claro e escuro** — toggle animado com persistência via localStorage
+- **Partículas animadas** — background interativo feito com canvas
+- **Atalhos de tema** — botões de acesso rápido para temas populares
+- **Mensagens de erro específicas** — cada tipo de erro (400, 429, 500, 503, rede) exibe uma mensagem clara e amigável
+- **Acessível** — ARIA labels, navegação por teclado e suporte a leitores de tela
+- **Otimizado para desktop** — o preview interativo funciona melhor em telas maiores; no celular e tablet o download do `.html` gerado abre perfeitamente no navegador
+---
+ 
+## Preview
+ 
 ```
-┌─────────────────────────────────────────┐
-│  ⬡ Gerador.AI              [🌙 Tema]   │
-├─────────────────────────────────────────┤
-│                                         │
-│    Gere páginas completas               │
-│    com inteligência artificial          │
-│                                         │
-│  [ Digite o tema da página... ]         │
-│                                         │
-│        [ ⚡ GERAR PÁGINA ]             │
-│                                         │
-│  Populares: 🍽️ 💪 🎨 🦷 👗           │
-└─────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────┐
+│  ⬡ Gerador.AI                          [🌙 Tema]   │
+├─────────────────────────────────────────────────────┤
+│                                                     │
+│         Gere páginas completas                      │
+│         com inteligência artificial                 │
+│                                                     │
+│    [ 🔍 Digite o tema da página... ]               │
+│                                                     │
+│           [ ⚡ GERAR PÁGINA ]                      │
+│                                                     │
+│  Populares: 🍽️ Restaurante  💪 Academia            │
+│             🎨 Portfólio    🦷 Clínica              │
+└─────────────────────────────────────────────────────┘
 ```
-
+ 
 ---
-
-## ✨ Funcionalidades
-
-- 🤖 **Geração com IA** — Usa Claude (Anthropic) para criar páginas completas
-- 👁️ **Preview interativo** — Visualize o resultado em iframe responsivo
-- 📱 **Modos de visualização** — Desktop, Tablet e Mobile
-- 🎨 **Syntax Highlight** — Código com destaque de sintaxe
-- 📋 **Copiar código** — Um clique para copiar HTML, CSS ou JS
-- ⬇️ **Download** — Baixe a página gerada como arquivo `.html`
-- 🌙 **Tema claro/escuro** — Toggle animado com persistência
-- ✨ **Partículas animadas** — Background interativo com canvas
-- ⚡ **Tags populares** — Atalhos para temas comuns
-- ♿ **Acessível** — ARIA labels, navegação por teclado, alto contraste
-
----
-
-## 🗂️ Estrutura do Projeto
-
+ 
+## Estrutura de Pastas
+ 
 ```
 gerador-de-pagina/
 │
+├── index.html          # Estrutura principal da aplicação
+│
 ├── frontend/
-│   ├── index.html          # HTML principal com estrutura completa
-│   ├── style.css           # CSS com tema Neon Tech (claro/escuro)
-│   ├── script.js           # JavaScript puro (sem frameworks)
+│   ├── style.css           # Estilos com tema Neon Tech (claro/escuro)
+│   ├── script.js           # Lógica da interface, preview e formatação de código
 │   └── assets/
 │       └── icons.svg       # Ícones SVG inline
 │
 ├── backend/
-│   ├── server.js           # Entry point Express
-│   ├── .env.example        # Template de variáveis de ambiente
-│   ├── package.json        # Dependências Node.js
+│   ├── server.js                        # Entry point — Express, CORS, middlewares
+│   ├── package.json                     # Dependências do projeto
+│   ├── package-lock.json                # Versões exatas instaladas (não editar manualmente)
+│   ├── .env                             # Modelo de variáveis de ambiente
+│   ├── .gitignore                       # Arquivos ignorados pelo Git
 │   ├── routes/
-│   │   └── generate.js     # Rota POST /api/generate
+│   │   └── generate.js                  # Rota POST /api/generate
 │   ├── controllers/
-│   │   └── generateController.js  # Validação e controle de fluxo
+│   │   └── generateController.js        # Validação e controle de fluxo
 │   └── services/
-│       └── iaService.js    # Integração com a API da Anthropic
+│       └── iaService.js                 # Integração com a API da Groq
 │
-└── README.md               # Este arquivo
+├── .gitattributes      # Configurações de linha do Git
+├── LICENSE
+└── README.md
 ```
-
+ 
 ---
-
-## 🛠️ Instalação e Configuração
-
-### Pré-requisitos
-
-- **Node.js** v18+ ([nodejs.org](https://nodejs.org))
-- **npm** v8+ (incluso com Node.js)
-- **Chave de API Anthropic** ([console.anthropic.com](https://console.anthropic.com))
-
+ 
+## Tecnologias
+ 
+### Frontend
+| Tecnologia | Versão | Uso |
+|---|---|---|
+| HTML5 | — | Estrutura semântica e acessível |
+| CSS3 | — | Variáveis, animações, grid, flexbox, glassmorphism |
+| JavaScript ES2020 | — | Fetch API, Canvas, DOM, Blob URL |
+| Google Fonts | — | Orbitron, Rajdhani, JetBrains Mono |
+ 
+### Backend
+| Tecnologia | Versão | Uso |
+|---|---|---|
+| Node.js | ≥ 18.0.0 | Runtime |
+| Express | ^4.19.2 | Framework HTTP |
+| groq-sdk | ^0.7.0 | Cliente oficial da API Groq |
+| cors | ^2.8.5 | Controle de origens permitidas |
+| dotenv | ^16.4.5 | Variáveis de ambiente |
+| nodemon | ^3.1.4 | Auto-reload em desenvolvimento |
+ 
 ---
-
-### 1️⃣ Clone ou extraia o projeto
-
+ 
+## Pré-requisitos
+ 
+Antes de começar, você precisa ter instalado:
+ 
+- **Node.js v18+** — [nodejs.org](https://nodejs.org)
+- **npm v8+** — incluído com o Node.js
+- **Chave de API da Groq** — [console.groq.com](https://console.groq.com) (gratuita)
+---
+ 
+## Instalação e Configuração
+ 
+### 1. Clone o repositório
+ 
 ```bash
-# Se via git:
 git clone https://github.com/seu-usuario/gerador-de-pagina.git
 cd gerador-de-pagina
-
-# Ou extraia o .zip e entre na pasta:
-cd gerador-de-pagina
 ```
-
----
-
-### 2️⃣ Configure o Backend
-
+ 
+### 2. Instale as dependências do backend
+ 
 ```bash
-# Entre na pasta do backend
 cd backend
-
-# Instale as dependências
 npm install
 ```
-
----
-
-### 3️⃣ Configure a API Key
-
-```bash
-# Copie o arquivo de exemplo
-cp .env.example .env
-
-# Abra o .env e adicione sua chave
-# Use seu editor favorito:
-nano .env
-# ou
-code .env
-```
-
-Edite o `.env`:
+ 
+### 3. Configure as variáveis de ambiente
+ 
+Abra o arquivo `.env` e preencha com sua chave da Groq:
+ 
 ```env
-ANTHROPIC_API_KEY=sk-ant-SUA_CHAVE_AQUI
+GROQ_API_KEY=gsk_SUA_CHAVE_AQUI
+GROQ_MODEL=llama-3.3-70b-versatile
 PORT=3001
 ```
-
-> 🔑 **Obtenha sua API Key em:** https://console.anthropic.com/
-> 
-> ⚠️ **NUNCA** compartilhe seu `.env` ou commite sua chave no Git!
-
+ 
+> ⚠️ **Nunca compartilhe seu `.env` nem faça commit dele no Git.** O arquivo já está listado no `.gitignore`.
+ 
 ---
-
-### 4️⃣ Inicie o Backend
-
+ 
+## Como Rodar Localmente
+ 
+### Iniciando o backend
+ 
 ```bash
-# Dentro da pasta /backend:
-
-# Modo produção:
-npm start
-
-# Modo desenvolvimento (auto-reload):
+# Dentro da pasta /backend
+ 
+# Modo desenvolvimento (reinicia automaticamente ao salvar)
 npm run dev
+ 
+# Modo produção
+npm start
 ```
-
-Você verá:
+ 
+Você verá no terminal:
+ 
 ```
 🚀 Gerador de Página — Backend rodando!
 📡 Servidor: http://localhost:3001
 🔑 API Key configurada: ✅ Sim
 🌐 CORS ativo para origens configuradas
 ```
-
----
-
-### 5️⃣ Abra o Frontend
-
-O frontend é HTML/CSS/JS puro — **não precisa de servidor**.
-
-**Opção A — Abrir direto no navegador:**
+ 
+### Abrindo o frontend
+ 
+O frontend é HTML/CSS/JS puro — não precisa de servidor.
+ 
+**Opção 1 — Abrir direto no navegador:**
 ```bash
-# Navegue até a pasta frontend e abra o index.html
-open frontend/index.html        # macOS
-start frontend/index.html       # Windows
-xdg-open frontend/index.html   # Linux
+# macOS
+open index.html
+ 
+# Windows
+start index.html
+ 
+# Linux
+xdg-open index.html
 ```
-
-**Opção B — Live Server (VS Code):**
-1. Instale a extensão **Live Server** no VS Code
+ 
+**Opção 2 — Live Server (VS Code):**
+1. Instale a extensão **Live Server**
 2. Clique com botão direito em `index.html`
 3. Selecione **"Open with Live Server"**
-
-**Opção C — Python HTTP Server:**
+**Opção 3 — Python:**
 ```bash
-cd frontend
+
 python3 -m http.server 3000
 # Acesse: http://localhost:3000
 ```
-
+ 
+> O frontend aponta para `http://localhost:3001` por padrão enquanto rodando localmente.
+ 
 ---
-
-## 🔌 API — Documentação
-
+ 
+## Servidor em Produção (Render)
+ 
+O backend está hospedado no **Render**, acessível 24 horas por dia sem precisar do seu computador ligado.
+ 
+**URL do servidor:** `https://gerador-de-pagina-api.onrender.com`
+ 
+### Como fazer o deploy no Render
+ 
+1. Crie uma conta em [render.com](https://render.com) (pode entrar com GitHub)
+2. Clique em **New → Web Service**
+3. Selecione o repositório do projeto no GitHub
+4. Configure o serviço:
+   - **Root Directory:** `backend`
+   - **Build Command:** `npm install`
+   - **Start Command:** `npm start`
+   - **Instance Type:** Free
+5. Em **Environment Variables**, adicione:
+   - `GROQ_API_KEY` → sua chave da Groq
+   - `GROQ_MODEL` → `llama-3.3-70b-versatile`
+6. Clique em **Create Web Service**
+### Verificar se o servidor está no ar
+ 
+Acesse no navegador:
+ 
+```
+https://gerador-de-pagina-api.onrender.com/health
+```
+ 
+Resposta esperada:
+```json
+{
+  "status": "ok",
+  "version": "1.0.0",
+  "service": "Gerador de Página API"
+}
+```
+ 
+---
+ 
+## ⚠️ Aviso sobre o Plano Gratuito do Render
+ 
+O plano gratuito do Render tem uma limitação importante: **o servidor entra em modo de hibernação após 15 minutos de inatividade**.
+ 
+Quando o servidor está hibernando, a **primeira requisição demora entre 30 e 60 segundos** para responder — tempo necessário para o servidor "acordar". Após isso, todas as requisições seguintes respondem normalmente (2 a 3 segundos).
+ 
+**O que o usuário vai ver:** ao gerar a primeira página após um período sem uso, o botão ficará no estado "Gerando..." por mais tempo que o normal. Isso não é um erro — é o servidor acordando.
+ 
+**Como evitar:** planos pagos do Render mantêm o servidor sempre ativo. Outra opção é usar um serviço externo de "ping" (como o [UptimeRobot](https://uptimerobot.com)) para fazer requisições periódicas ao `/health` e manter o servidor acordado gratuitamente.
+ 
+---
+ 
+## API — Documentação
+ 
 ### `POST /api/generate`
-
+ 
 Gera uma página web completa para o tema informado.
-
+ 
 **Request:**
 ```http
-POST http://localhost:3001/api/generate
+POST https://gerador-de-pagina-api.onrender.com/api/generate
 Content-Type: application/json
-
+ 
 {
   "tema": "padaria artesanal"
 }
 ```
-
-**Response (200 OK):**
+ 
+**Resposta de sucesso (200):**
 ```json
 {
   "success": true,
@@ -200,106 +295,94 @@ Content-Type: application/json
   "css": ":root { --primary: #... } body { ... }",
   "js": "// Menu mobile\ndocument.querySelector...",
   "completo": "<!DOCTYPE html><html>...</html>",
-  "geradoEm": "2025-01-15T10:30:00.000Z"
+  "geradoEm": "2025-05-28T10:30:00.000Z"
 }
 ```
-
-**Response (400 Bad Request):**
-```json
-{
-  "error": true,
-  "message": "O campo \"tema\" é obrigatório e deve ser uma string."
-}
-```
-
+ 
+**Respostas de erro:**
+ 
+| Status | Significado | Mensagem ao usuário |
+|---|---|---|
+| 400 | Tema inválido ou muito curto | "O tema enviado é inválido. Digite um tema com pelo menos 2 caracteres." |
+| 429 | Limite da API atingido | "Muitas requisições em pouco tempo. Aguarde alguns segundos e tente novamente." |
+| 500 | Erro interno no servidor | "Erro interno no servidor. A IA pode estar sobrecarregada, tente novamente." |
+| 503 | Servidor indisponível | "Servidor temporariamente indisponível. Tente novamente em alguns instantes." |
+| Rede | Servidor offline | "Não foi possível conectar ao servidor. Verifique se o backend está rodando." |
+ 
+---
+ 
 ### `GET /health`
-
+ 
 Verifica se o servidor está online.
-
+ 
+```http
+GET https://gerador-de-pagina-api.onrender.com/health
+```
+ 
 ```json
 {
   "status": "ok",
   "version": "1.0.0",
-  "timestamp": "2025-01-15T10:30:00.000Z",
+  "timestamp": "2025-05-28T10:30:00.000Z",
   "service": "Gerador de Página API"
 }
 ```
-
+ 
 ---
-
-## 🎨 Design System — Neon Tech
-
-### Paleta de Cores
-
-| Token | Hex (Dark) | Uso |
-|-------|-----------|-----|
-| `--neon-blue` | `#00D1FF` | Destaque primário, bordas ativas |
-| `--neon-purple` | `#8B5CFF` | Gradientes, tabs ativos |
-| `--neon-green` | `#00FFB7` | Sucesso, cópia, status |
-| `--neon-pink` | `#FF2D78` | Erros, alertas |
-| `--bg-primary` | `#0A0A0F` | Fundo principal |
-| `--text-primary` | `#F0F0FF` | Texto principal |
-
-### Tipografia
-
-- **Orbitron** — Títulos, logo, badges (futurista)
-- **Rajdhani** — Corpo, botões, labels (clean)
-- **JetBrains Mono** — Código, URLs (monospace)
-
+ 
+## Variáveis de Ambiente
+ 
+Crie o arquivo `backend/.env` :
+ 
+| Variável | Obrigatório | Padrão | Descrição |
+|---|---|---|---|
+| `GROQ_API_KEY` | ✅ Sim | — | Chave da API da Groq |
+| `GROQ_MODEL` | Não | `llama-3.3-70b-versatile` | Modelo de IA a usar |
+| `PORT` | Não | `3001` | Porta do servidor |
+| `ALLOWED_ORIGINS` | Não | Lista padrão | Origens CORS permitidas (separadas por vírgula) |
+ 
 ---
-
-## 🧰 Tecnologias
-
-### Frontend
-| Tecnologia | Versão | Uso |
-|-----------|--------|-----|
-| HTML5 | — | Estrutura semântica |
-| CSS3 | — | Variables, animations, grid, flexbox |
-| JavaScript ES2020 | — | Fetch API, Canvas, DOM |
-| Google Fonts | — | Orbitron, Rajdhani, JetBrains Mono |
-
-### Backend
-| Tecnologia | Versão | Uso |
-|-----------|--------|-----|
-| Node.js | ≥18 | Runtime |
-| Express | ^4.19 | Framework HTTP |
-| CORS | ^2.8 | Cross-Origin |
-| dotenv | ^16.4 | Variáveis de ambiente |
-| @anthropic-ai/sdk | ^0.32 | API da IA |
-| nodemon | ^3.1 | Dev auto-reload |
-
+ 
+## Modelos de IA Disponíveis
+ 
+Configure o modelo pelo campo `GROQ_MODEL` no `.env`:
+ 
+| Modelo | Velocidade | Qualidade | Recomendação |
+|---|---|---|---|
+| `llama-3.3-70b-versatile` | Rápido | ⭐⭐⭐⭐⭐ | **Padrão — melhor equilíbrio** |
+| `llama-3.1-8b-instant` | Muito rápido | ⭐⭐⭐ | Testes e desenvolvimento |
+| `mixtral-8x7b-32768` | Médio | ⭐⭐⭐⭐ | Contexto longo |
+| `gemma2-9b-it` | Rápido | ⭐⭐⭐ | Alternativa leve |
+ 
 ---
-
-## ⚠️ Troubleshooting
-
-### Backend não inicia
+ 
+## Solução de Problemas
+ 
+**Backend não inicia:**
 ```bash
-# Verifique se o Node.js está instalado
+# Verifique a versão do Node
 node --version  # Deve ser v18+
-
-# Verifique se as dependências foram instaladas
-cd backend && npm install
+ 
+# Reinstale as dependências
+cd backend && rm -rf node_modules && npm install
 ```
-
-### "API Key não configurada"
+ 
+**"API Key não configurada":**
 ```bash
-# Verifique se o .env existe
-ls -la backend/.env
-
-# Verifique o conteúdo (a chave não deve estar vazia)
+# Verifique se o .env existe e tem a chave preenchida
 cat backend/.env
 ```
-
-### Erro de CORS no frontend
-Certifique-se de que a origem do frontend está na lista `ALLOWED_ORIGINS` do `.env`, ou abra o `index.html` diretamente no navegador (sem servidor ou via Live Server).
-
-### Preview não aparece
-O iframe usa `sandbox` por segurança. Se o conteúdo gerado tiver scripts externos bloqueados, é comportamento esperado do sandbox do browser.
-
+ 
+**Erro de CORS no frontend:**
+Certifique-se de que a origem do frontend está na lista `ALLOWED_ORIGINS` do `.env`, ou abra o `index.html` diretamente no navegador.
+ 
+**Preview não carrega:**
+O iframe usa `sandbox` por segurança. Alguns scripts externos podem ser bloqueados — comportamento esperado do browser.
+ 
 ---
-
-## 📁 .gitignore recomendado
-
+ 
+## .gitignore recomendado
+ 
 ```
 backend/node_modules/
 backend/.env
@@ -307,24 +390,15 @@ backend/.env
 .DS_Store
 Thumbs.db
 ```
-
+ 
 ---
-
-## 📄 Licença
-
-MIT License — Livre para usar, modificar e distribuir.
-
+ 
+## Licença
+ 
+MIT License — livre para usar, modificar e distribuir.
+ 
 ---
-
-## 💡 Dicas de Uso
-
-- **Seja específico:** "pizzaria napolitana italiana" gera resultados melhores que apenas "pizzaria"
-- **Use o botão Regenerar** para variações diferentes do mesmo tema
-- **Download:** O arquivo `.html` é 100% autossuficiente (sem dependências externas)
-- **Código completo:** Use a aba "Completo" para copiar a página inteira de uma vez
-
----
-
+ 
 <div align="center">
-  Feito com ❤️ e IA · <strong>Gerador.AI</strong> · Powered by Claude (Anthropic)
+  Feito com ❤️ · <strong>Gerador.AI</strong> · Powered by Groq + LLaMA
 </div>
