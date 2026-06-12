@@ -761,18 +761,238 @@ body {
 .error-inner h2 { font-family: 'Orbitron', monospace; font-size: 1.1rem; color: var(--text-primary); }
 .error-inner p { color: var(--text-secondary); font-size: 0.95rem; max-width: 400px; }
 
-/* ---- FOOTER ---- */
+/* ============================================
+   FOOTER COMPLETO
+   3 colunas: identidade, projeto, desenvolvedor
+   + linha inferior com copyright e stack
+   ============================================ */
+
 .footer {
-  position: relative; z-index: 1;
+  position: relative;
+  z-index: 1;
+  /* Borda superior sutil separando do conteúdo */
   border-top: 1px solid var(--border-color);
-  padding: 2rem;
-  text-align: center;
+  /* Padding generoso para respirar */
+  padding: 4rem 2rem 2rem;
+  margin-top: 4rem;
+  /* Transição suave ao trocar tema */
+  transition: border-color 0.4s ease;
 }
 
-.footer-inner { display: flex; flex-direction: column; gap: 4px; }
-.footer p { color: var(--text-muted); font-size: 0.88rem; }
-.footer-brand { color: var(--neon-blue); font-weight: 700; }
-.footer-sub { font-size: 0.78rem; }
+/* Container principal — 3 colunas no desktop */
+.footer-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  /* Primeira coluna maior (identidade), as outras dividem o espaço igual */
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 3rem;
+  padding-bottom: 3rem;
+  /* Borda separando o body do footer do rodapé de copyright */
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* ---- COLUNA 1 — Logo e descrição ---- */
+
+/* Logo do footer — mesma lógica do header mas menor */
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.footer-logo svg {
+  /* Mesmo glow do header */
+  filter: drop-shadow(0 0 6px rgba(0, 209, 255, 0.4));
+  flex-shrink: 0;
+}
+
+.footer-logo-text {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.05em;
+}
+
+/* Ponto colorido igual ao header */
+.footer-logo-accent {
+  color: var(--neon-blue);
+}
+
+/* Descrição curta do projeto */
+.footer-description {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 320px;
+  margin-bottom: 1.5rem;
+}
+
+/* Indicador de status da API */
+.footer-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 255, 183, 0.08);
+  border: 1px solid rgba(0, 255, 183, 0.2);
+  border-radius: 100px;
+  padding: 5px 14px;
+  width: fit-content;
+}
+
+/* Bolinha verde pulsando — indica que está online */
+.footer-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--neon-green);
+  /* Sombra neon verde para reforçar o efeito */
+  box-shadow: 0 0 6px var(--neon-green);
+  /* Animação de pulso já definida no CSS global (reutilizamos) */
+  animation: pulse 2s infinite;
+}
+
+.footer-status-text {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--neon-green);
+  text-transform: uppercase;
+}
+
+/* ---- COLUNAS 2 e 3 — Links ---- */
+
+/* Título de cada coluna */
+.footer-col-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 1.2rem;
+}
+
+/* Lista sem marcadores — role="list" no HTML garante acessibilidade */
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Cada link individual */
+.footer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  /* Transição suave no hover */
+  transition: color 0.25s ease, gap 0.25s ease;
+}
+
+.footer-link:hover {
+  color: var(--neon-blue);
+  /* Aumenta o gap levemente — dá sensação de movimento */
+  gap: 10px;
+}
+
+.footer-link:focus-visible {
+  outline: 2px solid var(--neon-blue);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* ---- LINHA INFERIOR — copyright e stack ---- */
+.footer-bottom {
+  max-width: 1400px;
+  margin: 2rem auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.footer-copyright {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* Link do nome do dev no copyright */
+.footer-dev-link {
+  color: var(--neon-blue);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.footer-dev-link:hover {
+  color: var(--neon-purple);
+}
+
+.footer-stack {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+/* Links das tecnologias na linha inferior */
+.footer-stack-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-stack-link:hover {
+  color: var(--neon-purple);
+}
+
+/* ---- RESPONSIVIDADE DO FOOTER ---- */
+
+/* Tablet — 2 colunas */
+@media (max-width: 900px) {
+  .footer-inner {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  /* Coluna de identidade ocupa as 2 colunas inteiras */
+  .footer-brand-col {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Mobile — 1 coluna empilhada */
+@media (max-width: 600px) {
+  .footer {
+    padding: 3rem 1.5rem 1.5rem;
+  }
+
+  .footer-inner {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .footer-brand-col {
+    grid-column: auto;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
 
 /* ---- TOAST ---- */
 .toast {
